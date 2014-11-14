@@ -41,39 +41,65 @@ testCasRecentrage <- function(df) {
 
 #' Interpolations et extrapolations aux valeurs de vitesses de vent entières
 #' 
-#' Applique la norme NF S 31-114
-#' Les cas sont nommés d'après le projet de norme NFS 31114 v9 annexe B
+#' Applique la norme NF S 31-114\cr
+#' Les cas sont nommés de A à E d'après le projet de norme NFS 31114 v9 annexe B.\cr
+#' La fonction n'a pas connaissance du nombre de descripteurs du niveau sonore
+#' par classe de vitesse de vent. Le cas E (moins de 10 descripteurs) doit être déterminé en amont.\cr
+#' Pour ce cas, la data.frame en entrée ne contiendra pas de ligne pour la classe considérée.
+#' A titre transitoire, la valeur de Vs_moyen ou de L_median pourra être à NA.
 #'
-#' Le cas E (moins de 10 descripteurs) ne peut être attribué par la fonction.\cr
-#' Il appartient à l'utilisateur de ne pas transmettre à cette fonction 
-#' de données numériques pour une classe contenant moins de 10 descripteurs du niveau sonore.
-#' 
-#' @param dfIN data.frame en entrée contient 3 colonnes :
+#' @param dfIN data.frame en entrée contient au moins 3 colonnes :
 #'  \itemize{
-#'    \item classe    : numeric
-#'    \item Vs_moyen  : numeric
-#'    \item L_median  : numeric
+#'    \item classe    : numeric classe de vent
+#'    \item Vs_moyen  : numeric moyenne des vitesses de vent
+#'    \item L_median  : numeric médiane des descripteurs du niveau sonore
 #'    }
-#' Les colonnes doivent être nommées.
-#' La colonne classe est obligatoirement nommée ainsi.
-#' Les arguments Vs_moyen et L_median permettent de passer le nom des colonnes spécifiées.
+#' Les colonnes doivent être nommées.\cr
+#' Par défaut, la fonction attend les colonnes 'classe', Vs_moyen' et 'L_median'.
 #'
+#' @param classe character Optionnel
 #' @param Vs_moyen character Optionnel
 #' @param L_median character Optionnel
 #' 
+#' Les arguments classe, Vs_moyen et L_median permettent de spécifier le nom des colonnes
+#' si nécessaire.
+
 #'
-#'
-#' @return dfOUT data.frame de sortie contient 2 colonnes :
+#' @return data.frame en sortie contient 2 colonnes :
 #'  \itemize{
 #'   \item classe : numeric
 #'   \item indicateur : numeric
 #' }
 #'
 #' @export
-recentrage <- function(dfIN, Vs_moyen='Vs_moyen', L_median='L_median') {
+recentrage <- function(dfIN, classe='classe', Vs_moyen='Vs_moyen', 
+                       L_median='L_median') {
+  
+  ### Vérification du format de dfIN
+  codeErreur <- NA
+  # classe data.frame
+  if (!(class(dfIN)=='data.frame')) { codeErreur <- '1' }
+  # noms des colonnes
+  if (!(classe %in% names(dfIN))) { codeErreur <- '2.1' }
+  if (!(Vs_moyen %in% names(dfIN))) { codeErreur <- '2.2' }
+  if (!(L_median %in% names(dfIN))) { codeErreur <- '2.3' }
+  # type des données
+  if (!(is.numeric(dfIN$classe))) { codeErreur <- '3.1' }
+  if (!(is.numeric(dfIN$Vs_moyen))) { codeErreur <- '3.2' }
+  if (!(is.numeric(dfIN$L_median))) { codeErreur <- '3.3' }
+  # 1 ligne par classe de vitesse de vent (ou NA)
+  if (!(length(na.omit(unique(round(dfIN$Vs_moyen)))) + 
+          sum(is.na(dfIN$Vs_moyen)) == nrow(dfIN))) { codeErreur <- '4' }
+  
+  if (!(is.na(codeErreur))) {
+    warning(paste('Problème open31114::recentrage, dfIN erreur', codeErreur))
+  }
+  
+  
   
   ### Renommage des colonnes selon arguments
-  dfIN <- dplyr::select_(dfIN, 'classe', 'Vs_moyen'=Vs_moyen, 'L_median'=L_median)
+  dfIN <- dplyr::select_(dfIN, 'classe'=classe, 'Vs_moyen'=Vs_moyen, 
+                         'L_median'=L_median)
   
   ### Préparation de la data.frame de sortie
   dfOUT <- data.frame('classe'=numeric(0),'indicateur'=numeric(0))

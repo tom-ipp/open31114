@@ -3,37 +3,41 @@
 \alias{recentrage}
 \title{Interpolations et extrapolations aux valeurs de vitesses de vent entières}
 \usage{
-recentrage(dfIN, Vs_moyen = "Vs_moyen", L_median = "L_median")
+recentrage(dfIN, classe = "classe", Vs_moyen = "Vs_moyen",
+  L_median = "L_median")
 }
 \arguments{
-\item{dfIN}{data.frame en entrée contient 3 colonnes :
+\item{dfIN}{data.frame en entrée contient au moins 3 colonnes :
  \itemize{
-   \item classe    : numeric
-   \item Vs_moyen  : numeric
-   \item L_median  : numeric
+   \item classe    : numeric classe de vent
+   \item Vs_moyen  : numeric moyenne des vitesses de vent
+   \item L_median  : numeric médiane des descripteurs du niveau sonore
    }
-Les colonnes doivent être nommées.
-La colonne classe est obligatoirement nommée ainsi.
-Les arguments Vs_moyen et L_median permettent de passer le nom des colonnes spécifiées.}
+Les colonnes doivent être nommées.\cr
+Par défaut, la fonction attend les colonnes 'classe', Vs_moyen' et 'L_median'.}
+
+\item{classe}{character Optionnel}
 
 \item{Vs_moyen}{character Optionnel}
 
-\item{L_median}{character Optionnel}
+\item{L_median}{character Optionnel
+
+Les arguments classe, Vs_moyen et L_median permettent de spécifier le nom des colonnes
+si nécessaire.}
 }
 \value{
-dfOUT data.frame de sortie contient 2 colonnes :
+data.frame en sortie contient 2 colonnes :
  \itemize{
   \item classe : numeric
   \item indicateur : numeric
 }
 }
 \description{
-Applique la norme NF S 31-114
-Les cas sont nommés d'après le projet de norme NFS 31114 v9 annexe B
-}
-\details{
-Le cas E (moins de 10 descripteurs) ne peut être attribué par la fonction.\cr
-Il appartient à l'utilisateur de ne pas transmettre à cette fonction
-de données numériques pour une classe contenant moins de 10 descripteurs du niveau sonore.
+Applique la norme NF S 31-114\cr
+Les cas sont nommés de A à E d'après le projet de norme NFS 31114 v9 annexe B.\cr
+La fonction n'a pas connaissance du nombre de descripteurs du niveau sonore
+par classe de vitesse de vent. Le cas E (moins de 10 descripteurs) doit être déterminé en amont.\cr
+Pour ce cas, la data.frame en entrée ne contiendra pas de ligne pour la classe considérée.
+A titre transitoire, la valeur de Vs_moyen ou de L_median pourra être à NA.
 }
 

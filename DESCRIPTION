@@ -1,13 +1,13 @@
 Package: open31114
 Type: Package
-Title: Application de la norme NF S 31-114 (mesure du bruit éolien)
-Version: 0.3
-Date: 2014-11-13
+Title: Application norme NF S 31-114 (mesure du bruit éolien)
+Version: 0.4
+Date: 2014-11-14
 Author: Thomas Jacoviac
 Maintainer: Thomas Jacoviac <tjacoviac@priseauvent.fr>
 Description: Le package rassemble les fonctions utiles au calcul des
-    indicateurs de bruit définis par la norme NF S 31-114 : Mesurage du bruit
-    dans l'environnement avec et sans activité éolienne.
+    indicateurs de bruit définis par la norme NF S 31-114 :
+    Mesurage du bruit dans l'environnement avec et sans activité éolienne.
     Sponsorisé par Maïa Eolis.
 License: GPL-3
 Encoding: UTF-8

@@ -7,14 +7,14 @@ Application de la norme NF S 31-114 (mesure du bruit éolien)
 }
 \description{
 Le package rassemble les fonctions utiles au calcul des indicateurs de bruit, définis par la norme NF S 31-114 : Mesurage du bruit dans l'environnement avec et sans activité éolienne.\cr
-    Sponsorisé par Maïa Eolis.
+Sponsorisé par Maïa Eolis.
 }
 \details{
 \tabular{ll}{
-Package: \tab open-31114\cr
+Package: \tab open31114\cr
 Type: \tab Package\cr
-Version: \tab 0.2\cr
-Date: \tab 2014-11-04\cr
+Version: \tab 0.4\cr
+Date: \tab 2014-11-14\cr
 License: \tab GPL-3\cr
 }
 recentrage(data.frame)\cr
@@ -31,6 +31,7 @@ Maintainer: <tjacoviac@priseauvent.fr>
 }
 \keyword{ package }
 \seealso{
+\url{http://priseauvent.fr/}\cr
 \url{http://www.maiaeolis.fr/}
 }
 \examples{
